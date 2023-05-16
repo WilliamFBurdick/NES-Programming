@@ -4,9 +4,9 @@
 .segment "CODE"
 .org $8000
 Reset:
-lda #1 ; Initialize the A register with 1
+    lda #1              ; Initialize the A register with 1
 Loop:
 ; TODO:
-; Increment A
-; Compare the value in A with the decimal value 10
-; Branch back to "Loop" if the comparison was not equals (to zero)
+    inc $A              ; Increment A
+    cmp #10             ; Compare the value in A with the decimal value 10
+    bne Loop            ; Branch back to "Loop" if the comparison was not equals (to zero)

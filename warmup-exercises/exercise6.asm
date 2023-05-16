@@ -5,12 +5,12 @@
 .org $8000
 Reset:
 ; TODO:
-; Load the A register with the decimal value 1
-; Load the X register with the decimal value 2
-; Load the Y register with the decimal value 3
-; Increment X
-; Increment Y
-; Increment A
-; Decrement X
-; Decrement Y
-; Decrement A
+    lda #1              ; Load the A register with the decimal value 1
+    ldx #2              ; Load the X register with the decimal value 2
+    ldy #3              ; Load the Y register with the decimal value 3
+    inx                 ; Increment X
+    iny                 ; Increment Y
+    inc                 ; Increment A
+    dex                 ; Decrement X
+    dey                 ; Decrement Y
+    dec                 ; Decrement A
