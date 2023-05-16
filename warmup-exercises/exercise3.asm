@@ -5,10 +5,24 @@
 .org $8000
 Reset: ; TODO:
     lda #15             ; Load the A register with the literal decimal value 15
+
     tax                 ; Transfer the value from A to X
     tay                 ; Transfer the value from A to Y
     txa                 ; Transfer the value from X to A
     tya                 ; Transfer the value from Y to A
+
     ldx #6              ; Load X with the decimal value 6
-    txa                 ; Transfer the value from X to Y
-    tay
+    txa                 ; Transfer the value from X to A
+    tay                 ; Transfer A to Y
+
+    jmp Reset           ; Jump to Reset to force infinite loop
+    
+NMI:                    ; NMI handler
+    rti                 ; doesn't do anything
+IRQ:                    ; IRQ handler
+    rti                 ; doesn't do anything
+.segment "VECTORS"      ; Add addresses with vectors at $FFFA
+.org $FFFA
+.word NMI               ; Put 2 bytes with the NMI address at memory position $FFFA
+.word Reset             ; Put 2 bytes with the break address at memory position $FFFC
+.word IRQ               ; Put 2 bytes with the IRQ address at memory position $FFFE

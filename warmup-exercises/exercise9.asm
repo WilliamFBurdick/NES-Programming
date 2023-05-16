@@ -6,7 +6,19 @@
 Reset:
     lda #1              ; Initialize the A register with 1
 Loop:
-; TODO:
-    inc $A              ; Increment A
+    clc
+    adc #1              ; Increment A (using ADC #1)
     cmp #10             ; Compare the value in A with the decimal value 10
     bne Loop            ; Branch back to "Loop" if the comparison was not equals (to zero)
+
+    jmp Reset           ; Jump to Reset to force infinite loop
+    
+NMI:                    ; NMI handler
+    rti                 ; doesn't do anything
+IRQ:                    ; IRQ handler
+    rti                 ; doesn't do anything
+.segment "VECTORS"      ; Add addresses with vectors at $FFFA
+.org $FFFA
+.word NMI               ; Put 2 bytes with the NMI address at memory position $FFFA
+.word Reset             ; Put 2 bytes with the break address at memory position $FFFC
+.word IRQ               ; Put 2 bytes with the IRQ address at memory position $FFFE

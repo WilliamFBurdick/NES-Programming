@@ -4,10 +4,21 @@
 .segment "CODE"
 .org $8000
 Reset:
-ldy #10 ; Initialize the Y register with the decimal value 10
+    ldy #10             ; Initialize the Y register with the decimal value 10
 Loop:
-; TODO:
     tya                 ; Transfer Y to A
     sta $80,y           ; Store the value in A inside memory position $80+Y
     dey                 ; Decrement Y
-    bne Loop            ; Branch back to "Loop" until we are done
+    bpl Loop            ; Branch if plus (result of last instruction was positive)
+
+    jmp Reset           ; Jump to Reset to force infinite loop
+    
+NMI:                    ; NMI handler
+    rti                 ; doesn't do anything
+IRQ:                    ; IRQ handler
+    rti                 ; doesn't do anything
+.segment "VECTORS"      ; Add addresses with vectors at $FFFA
+.org $FFFA
+.word NMI               ; Put 2 bytes with the NMI address at memory position $FFFA
+.word Reset             ; Put 2 bytes with the break address at memory position $FFFC
+.word IRQ               ; Put 2 bytes with the IRQ address at memory position $FFFE
